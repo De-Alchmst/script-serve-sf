@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"errors"
   "github.com/wneessen/go-fileperm"
-
 )
 
 
@@ -20,9 +19,9 @@ func discoverSource() error {
 			Name: "/",
 			Type: fuse.DT_Dir,
 		},
-		Children: []Fid{},
+		Children: &[]Fid{},
 		FullPath: sourceDir,
-		Executable: true,
+		IsExecutable: true,
 	}
 	fileMap[nextFid] = root
 
@@ -47,11 +46,13 @@ func searchDir(self FileNode, path string) (error) {
 	if err != nil { return err }
 
 	for _, child := range children {
+		childFid := nextFid
+		nextFid += 1
 
 		// create child node
 		childNode := FileNode{
 			Dirent: fuse.Dirent{
-				Inode: uint64(nextFid),
+				Inode: uint64(childFid),
 				Name : child.Name(),
 				Type : fuse.DT_File,
 			},
@@ -62,20 +63,25 @@ func searchDir(self FileNode, path string) (error) {
 		// check if executable
 		p, err := fileperm.New(childNode.FullPath)
 		if err != nil { return err }
-		childNode.Executable = p.UserExecutable()
-		
-		// add child
-		self.Children = append(self.Children, nextFid)
-		fileMap[nextFid] = childNode
+		childNode.IsExecutable = p.UserExecutable()
 
-		nextFid += 1
-
-		// recurse
+		// recurse if dir
 		if child.IsDir() {
-			childNode.Children = []Fid{}
+			childNode.Children = &[]Fid{}
 			childNode.Dirent.Type = fuse.DT_Dir
 			searchDir(childNode, childNode.FullPath)
+
+		// or check size if non-executable file
+		} else if !childNode.IsExecutable {
+			info, err := child.Info()
+			if err != nil { return err }
+
+			childNode.Size = info.Size()
 		}
+		
+		// add child
+		*self.Children = append(*self.Children, childFid)
+		fileMap[childFid] = childNode
 	}
 
 	return nil
