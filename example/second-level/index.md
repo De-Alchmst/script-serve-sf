@@ -31,7 +31,7 @@ if len(sys.argv) == 3:
 
 
 # on read
-print("# Dynamic file!")
+print("# Generated file!")
 print("This file has been dynamically generated")
 print("\nyour PID is:", sys.argv[1], "\n")
 

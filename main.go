@@ -28,6 +28,9 @@ func main() {
 	// analyze the source dir
 	err := discoverSource()
 	if err != nil { log.Fatal("Cannot scan ", sourceDir) }
+
+	// initialise cache
+	initCache()
 	
 	// mount fuse
 	con, err := fuse.Mount(

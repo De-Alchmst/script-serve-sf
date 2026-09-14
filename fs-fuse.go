@@ -102,7 +102,7 @@ func (f Fid) ReadAll(ctx context.Context) ([]byte, error) {
 		return nil, errors.New("invalid Fid")
 	}
 
-	return node.ReadFile(ctx.Value("PID").(uint32))
+	return node.ReadFile(Pid(ctx.Value("PID").(uint32)))
 }
 
 
@@ -112,7 +112,7 @@ func (f Fid) Read(ctx context.Context, req *fuse.ReadRequest, resp *fuse.ReadRes
 		return errors.New("invalid Fid")
 	}
 
-	data, err := node.ReadFile(ctx.Value("PID").(uint32))
+	data, err := node.ReadFile(Pid(ctx.Value("PID").(uint32)))
 	if err != nil { return err }
 
 	fuseutil.HandleRead(req, resp, data)
