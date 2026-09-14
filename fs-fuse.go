@@ -5,7 +5,6 @@ import (
 	"os"
 	"syscall"
 	"errors"
-	"log"
 
 	"bazil.org/fuse"
 	"bazil.org/fuse/fs"
@@ -86,7 +85,6 @@ func (f Fid) Open(ctx context.Context, req *fuse.OpenRequest, resp *fuse.OpenRes
 	if !validFid {
 		return nil, errors.New("invalid Fid")
 	}
-	log.Println("|| ", node.FullPath)
 
 	// if executable, set `fuse.OpenDirectIo` so that it is not limited
 	// by it's reported size
@@ -103,7 +101,6 @@ func (f Fid) ReadAll(ctx context.Context) ([]byte, error) {
 	if !validFid || node.Dirent.Type == fuse.DT_Dir {
 		return nil, errors.New("invalid Fid")
 	}
-	log.Println(">> ", node.FullPath)
 
 	return node.ReadFile(ctx.Value("PID").(uint32))
 }
@@ -114,7 +111,6 @@ func (f Fid) Read(ctx context.Context, req *fuse.ReadRequest, resp *fuse.ReadRes
 	if !validFid || node.Dirent.Type == fuse.DT_Dir {
 		return errors.New("invalid Fid")
 	}
-	log.Println("OO ", node.FullPath)
 
 	data, err := node.ReadFile(ctx.Value("PID").(uint32))
 	if err != nil { return err }
