@@ -31,6 +31,7 @@ func main() {
 
 	// initialise cache
 	initCache()
+	go CleanCache()
 	
 	// mount fuse
 	con, err := fuse.Mount(
