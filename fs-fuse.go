@@ -121,6 +121,11 @@ func (f Fid) Read(ctx context.Context, req *fuse.ReadRequest, resp *fuse.ReadRes
 
 
 func (f Fid) Write(ctx context.Context, req *fuse.WriteRequest, resp *fuse.WriteResponse) error {
+	node, validFid := fileMap[f]
+	if !validFid || node.Dirent.Type == fuse.DT_Dir || node.IsExecutable {
+		return errors.New("cannow write here, lel")
+	}
+
 	buf := getPidWriteBuffer(Pid(ctx.Value("PID").(uint32)), f)
 	
 	bufLen := len(*buf)
