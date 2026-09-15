@@ -1,4 +1,4 @@
-module script-server-fs
+module script-serve-fs
 
 go 1.22.2
 
