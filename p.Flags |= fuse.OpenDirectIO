@@ -1,0 +1,85 @@
+[33mcommit cf6048be70fee8e6a39235108170f111caf1f765[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 16:49:27 2026 +0200
+
+    ...
+
+[33mcommit 7f91a91ef312eb09d7b863cc6b13bbfd090c4da6[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 16:42:55 2026 +0200
+
+    better write check
+
+[33mcommit 6d6192a45d1bf01e22d15f2f10a26b9a81e8c70b[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 12:36:57 2026 +0200
+
+    fsync for vim support
+
+[33mcommit 9f479cccb9e93227026b58bfa89fcae0f9895075[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 12:13:13 2026 +0200
+
+    "betta" file permissions
+
+[33mcommit 83719a3b891462d15c0e73c8267b8289633ab6aa[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 11:43:03 2026 +0200
+
+    allow other
+
+[33mcommit e4d62a00a007a60740a1cda2034c807056784b17[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 10:52:25 2026 +0200
+
+    -r
+
+[33mcommit 844609120a6b1c4dfce57012953f6edf01be6aaa[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 10:07:06 2026 +0200
+
+    README.md
+
+[33mcommit 797c19cefbe2c0af9a0508ad16608ea93aa2bd17[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Tue Sep 15 09:51:15 2026 +0200
+
+    writing to files
+
+[33mcommit a85e4ed44a41319060b0ef2fec8406b5c0e5c57b[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 21:57:58 2026 +0200
+
+    preparations for write
+
+[33mcommit fbdf108f6d038ad0fa159c2476dd51b12e0111e9[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 21:02:18 2026 +0200
+
+    better example code
+
+[33mcommit 8ba4c973fc4bc19f96ce5bb1cd964d112b6a5a98[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 20:39:34 2026 +0200
+
+    info..
+
+[33mcommit 0229f6d746cd26a2df8745a995c2321ae61f0a5e[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 19:30:51 2026 +0200
+
+    can read all files now
+    
+    non-executable through size, executable through directIo flag
+
+[33mcommit 5eb18bf7083c0cda163d148e795033ac2fb43c2d[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 19:08:47 2026 +0200
+
+    corret size on non-executable files
+
+[33mcommit e82d9bdac256515543e73ce8676675251cf2ea66[m
+Author: De-Alchmst <PolakJ_37@proton.me>
+Date:   Mon Sep 14 17:33:42 2026 +0200
+
+    can read dir data
