@@ -139,16 +139,23 @@ func (f Fid) Write(ctx context.Context, req *fuse.WriteRequest, resp *fuse.Write
 }
 
 
+// both flush and fsync do the same thing, so let's export it to dedicated
+// function
 func (f Fid) Flush(ctx context.Context, req *fuse.FlushRequest) error {
-	pid := Pid(ctx.Value("PID").(uint32))
+	return handleFlush(Pid(ctx.Value("PID").(uint32)), f)
+}
+func (f Fid) Fsync(ctx context.Context, req *fuse.FsyncRequest) error {
+	return handleFlush(Pid(ctx.Value("PID").(uint32)), f)
+}
 
+
+func handleFlush(pid Pid, fid Fid) error {
 	// don't bother creating a buffer, if not present
 	// only write if exists and has somethin' to write
-	buf := getPidWriteBufferNoCreate(pid, f)
+	buf := getPidWriteBufferNoCreate(pid, fid)
 	if buf != nil {
-		err :=  executeCachedFile(pid, f)
+		err :=  executeCachedFile(pid, fid)
 		return err
 	}
 	return nil
 }
-
