@@ -119,3 +119,36 @@ func (f Fid) Read(ctx context.Context, req *fuse.ReadRequest, resp *fuse.ReadRes
 	return nil
 }
 
+
+func (f Fid) Write(ctx context.Context, req *fuse.WriteRequest, resp *fuse.WriteResponse) error {
+	buf := getPidWriteBuffer(Pid(ctx.Value("PID").(uint32)), f)
+	
+	bufLen := len(*buf)
+	reqLen  := len(req.Data)
+	spaceDelta := reqLen - bufLen + int(req.Offset) 
+	
+	if spaceDelta > 0 {
+		oldContents := *buf
+		*buf = make([]byte, (bufLen + spaceDelta) * 2) // IDK
+		copy(*buf, oldContents)
+	}
+
+	copy((*buf)[req.Offset:], req.Data)
+	resp.Size = reqLen
+	return nil
+}
+
+
+func (f Fid) Flush(ctx context.Context, req *fuse.FlushRequest) error {
+	pid := Pid(ctx.Value("PID").(uint32))
+
+	// don't bother creating a buffer, if not present
+	// only write if exists and has somethin' to write
+	buf := getPidWriteBufferNoCreate(pid, f)
+	if buf != nil {
+		err :=  executeCachedFile(pid, f)
+		return err
+	}
+	return nil
+}
+

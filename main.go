@@ -22,11 +22,11 @@ func main() {
 		usage()
 	}
 
-	sourceDir   = os.Args[1] // global defined in fs.go
+	sourceDir  := os.Args[1]
 	mountpoint := os.Args[2]
 
 	// analyze the source dir
-	err := discoverSource()
+	err := discoverSource(sourceDir)
 	if err != nil { log.Fatal("Cannot scan ", sourceDir) }
 
 	// initialise cache

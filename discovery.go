@@ -9,7 +9,7 @@ import (
 )
 
 
-func discoverSource() error {
+func discoverSource(sourceDir string) error {
 	fileMap = make(map[Fid]FileNode)
 
 	// populate root

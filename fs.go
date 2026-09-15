@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"bytes"
 
 	"bazil.org/fuse"
 )
@@ -26,7 +27,6 @@ type FileNode struct {
 
 
 var fileMap map[Fid]FileNode
-var sourceDir string
 var rootFid Fid = 1
 var nextFid = rootFid
 
@@ -60,7 +60,7 @@ func getPidWriteResult(pid Pid, fid Fid) ([]byte, bool) {
 		if exists {
 			if fidData.OutputBuffer != nil {
 				data := fidData.OutputBuffer
-				fidData.OutputBuffer = nil
+				userCache[fid] = CacheEntry{ InputBuffer: nil, OutputBuffer: nil, }
 				return data, true
 			}
 		}
@@ -72,7 +72,7 @@ func getPidWriteResult(pid Pid, fid Fid) ([]byte, bool) {
 
 // returns `Fid` `InputBuffer` under `Pid`, creates if needed
 // code not optimal, but readable!
-func getPidWriteBuffer(pid Pid, fid Fid) (*[]byte) {
+func getPidWriteBuffer(pid Pid, fid Fid) *[]byte {
 	userCache, exists := cache[pid]
 	if !exists {
 		userCache = make(map[Fid]CacheEntry)
@@ -97,6 +97,18 @@ func getPidWriteBuffer(pid Pid, fid Fid) (*[]byte) {
 }
 
 
+// check if some file has 
+func getPidWriteBufferNoCreate(pid Pid, fid Fid) *[]byte {
+	userCache, exists := cache[pid]
+	if !exists { return nil }
+
+	fidData, exists := userCache[fid]
+	if !exists { return nil }
+
+	return fidData.InputBuffer
+}
+
+
 // expects that there is valid `InputBuffer`, will overwrite unused `OutputBuffer`
 func executeCachedFile(pid Pid, fid Fid) error {
 	node, validFid := fileMap[fid]
@@ -105,9 +117,11 @@ func executeCachedFile(pid Pid, fid Fid) error {
 	}
 
 	userCache := cache[pid]
-
 	input := userCache[fid]
-	output, err := exec.Command(node.FullPath, strconv.FormatUint(uint64(pid), 10), string(*input.InputBuffer)).Output()
+
+	// `exec.Command` doesn't like extra trailing NULLs
+	str := string(bytes.TrimRight(*input.InputBuffer, "\000"))
+	output, err := exec.Command(node.FullPath, strconv.FormatUint(uint64(pid), 10), str).Output()
 	if err != nil { return err }
 
 	userCache[fid] = CacheEntry{
