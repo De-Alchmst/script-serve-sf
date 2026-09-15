@@ -33,7 +33,7 @@ func (f Fid) Attr(ctx context.Context, a *fuse.Attr) error {
 
 	a.Inode = uint64(f)
 	if node.Dirent.Type == fuse.DT_Dir {
-		a.Mode = os.ModeDir | 0o777 // dr-xr-xr-x
+		a.Mode = os.ModeDir | 0o755 // drwxr-xr-x
 
 	} else {
 		if node.IsExecutable {
