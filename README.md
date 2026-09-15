@@ -14,6 +14,9 @@ go build
 script-serve-fs <source-dir> <mountpoint>
 ```
 
+This fs, by design, allows other users to access it. Thus, you need to enable
+`user_allow_other` in `/etc/fuse.conf`.
+
 Mounts `source-dir` to `mountpoint`, so that non-executable files are readable
 and executable files are readable and writable.
 On read, the file is executed with reader's `PID` as it's only argument and

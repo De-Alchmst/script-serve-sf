@@ -37,6 +37,7 @@ func main() {
 		mountpoint,
 		fuse.FSName("fuse/SFTH-api-test"),
 		fuse.Subtype("apifs"),
+		fuse.AllowOther(),
 	)
 	if err != nil { log.Fatal("cannot mount") }
 
